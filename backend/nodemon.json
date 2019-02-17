@@ -1,0 +1,5 @@
+{
+  "env": {
+    "MONGODB_URI": "mongodb://heroku_p3q85fmt:34pfmbjtn78v2f0kcusl56meq6@ds147011.mlab.com:47011/heroku_p3q85fmt"
+  }
+}
