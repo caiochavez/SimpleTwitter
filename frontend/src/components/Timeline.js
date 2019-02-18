@@ -2,14 +2,28 @@ import React, { Component } from 'react'
 import { Card, Container, Row, Col, Image, Form } from 'react-bootstrap'
 import Tweet from './Tweet'
 import Api from '../services/Api'
+import socket from 'socket.io-client'
 
 export default class Timeline extends Component {
 
   state = { newTweet: '', tweets: [] }
 
   async componentDidMount () {
+    this.subscribeToEvents()
     const res = await Api.get('/tweets')
     this.setState( () => ( { tweets: res.data } ) )
+  }
+
+  subscribeToEvents () {
+    const io = socket('http://localhost:3000')
+    io.on('tweet', data => {
+      this.setState( state => ( { tweets: [data, ...state.tweets] } ) )
+    })
+    io.on('like', data => {
+      this.setState( state => {
+        return { tweets: state.tweets.map(tweet => tweet._id === data._id ? data : tweet ) } 
+      })
+    })
   }
 
   handleValue (key, value) {
