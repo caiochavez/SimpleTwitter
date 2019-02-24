@@ -6,6 +6,11 @@ class Login extends Component {
 
   state = { username: '' }
 
+  async componentDidMount () {
+    const username = await AsyncStorage.getItem('@twitter:username')
+    if (username) this.props.navigation.navigate('App')
+  }
+
   handleValue (key, value) {
     this.setState( () => ( { [`${key}`]: value } ) )
   }
@@ -13,7 +18,7 @@ class Login extends Component {
   async handleLogin () {
     const { username } = this.state
     await AsyncStorage.setItem('@twitter:username', username)
-    this.props.navigation.navigate('TimeLine')
+    this.props.navigation.navigate('App')
   }
   
   render () {
